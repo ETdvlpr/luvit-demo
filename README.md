@@ -2,7 +2,7 @@
 
 Welcome to the Luvit Dating App Demo repository! This demo showcases the design and real-time database integration of a demo dating app.
 
-[Demo](demo_video.mp4)
+<img src="sample/demo_video.gif" height="400em" /> 
 
 ## Overview
 
