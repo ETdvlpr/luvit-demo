@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:luvit/shared/theme/app_theme.dart';
 import 'package:luvit/shared/theme/custom_icons.dart';
 import 'package:luvit/ui/controllers/home_controller.dart';
+import 'package:luvit/ui/controllers/profile_display_controller.dart';
 import 'package:luvit/ui/widgets/bottom_navbar.dart';
 import 'package:luvit/ui/widgets/profile/profile_card_list.dart';
 import 'package:luvit/ui/widgets/title_bar.dart';
@@ -13,12 +14,13 @@ class HomePage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    ProfileDisplayController profileDisplayController = Get.find();
     return Scaffold(
       backgroundColor: AppTheme.black13,
       body: RefreshIndicator(
         onRefresh: () async {
-          await controller.fetchProfiles();
-          controller.currentIndex.value = 0;
+          await profileDisplayController.fetchProfiles();
+          profileDisplayController.currentIndex.value = 0;
         },
         child: ListView(
           children: [
@@ -48,7 +50,7 @@ class HomePage extends GetView<HomeController> {
                 ),
                 const SizedBox(height: 20),
                 Container(
-                  constraints: BoxConstraints(minHeight: 600.h),
+                  constraints: BoxConstraints(minHeight: 675.h),
                   child: ProfileList(),
                 ),
               ],
@@ -58,17 +60,17 @@ class HomePage extends GetView<HomeController> {
         ),
       ),
       extendBody: true,
-      bottomNavigationBar: Obx(
-        () => CustomPaint(
-          painter: ShadowPainter(),
-          child: ClipPath(
-            clipper: BottomNavbarShape(),
-            child: Theme(
-              data: ThemeData(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-              ),
-              child: BottomNavigationBar(
+      bottomNavigationBar: CustomPaint(
+        painter: ShadowPainter(),
+        child: ClipPath(
+          clipper: BottomNavbarShape(),
+          child: Theme(
+            data: ThemeData(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+            ),
+            child: Obx(
+              () => BottomNavigationBar(
                 currentIndex: controller.selectedTab,
                 selectedItemColor: AppTheme.primaryColor,
                 unselectedItemColor: AppTheme.black58,
