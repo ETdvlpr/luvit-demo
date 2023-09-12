@@ -70,13 +70,13 @@ class ProfileList extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            '추천 드릴 친구들을 준비 중이에요',
+            'preparing friends'.tr,
             textAlign: TextAlign.center,
             style: AppTheme.headline4BoldStyle,
           ),
           const SizedBox(height: 12),
           Text(
-            '매일 새로운 친구들을 소개시켜드려요',
+            'introduce friends'.tr,
             textAlign: TextAlign.center,
             style: AppTheme.regularTextStyle.copyWith(
               fontSize: 16,

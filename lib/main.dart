@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.themeData,
         translations: AppTranslations(),
         locale: const Locale('kr', 'kr'),
-        fallbackLocale: const Locale('en', 'US'),
+        fallbackLocale: const Locale('kr', 'kr'),
         getPages: AppPages.pages,
       ),
     );
