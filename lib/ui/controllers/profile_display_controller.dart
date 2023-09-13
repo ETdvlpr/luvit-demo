@@ -64,8 +64,8 @@ class ProfileDisplayController extends GetxController {
     final dy = details.localPosition.dy - mainDragStartPosition!.dy;
 
     mainCardOffset.value = Offset(
-      dx.clamp(double.negativeInfinity, 0),
-      dy.clamp(0, double.infinity),
+      dx.clamp(double.negativeInfinity, 10),
+      dy.clamp(-20, double.infinity),
     );
   }
 

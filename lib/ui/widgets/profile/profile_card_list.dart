@@ -29,6 +29,7 @@ class ProfileList extends StatelessWidget {
                   () => Transform.translate(
                     offset: controller.mainCardOffset.value,
                     child: ProfileCard(
+                      key: Key(controller.currentIndex.value.toString()),
                       profile:
                           controller.profiles[controller.currentIndex.value],
                     ),
@@ -39,7 +40,7 @@ class ProfileList extends StatelessWidget {
             // Show a small part of the next card to indicate more cards are available.
             if (controller.currentIndex.value + 1 < controller.profiles.length)
               Positioned(
-                left: 375.w,
+                left: 365.w,
                 child: GestureDetector(
                   onHorizontalDragUpdate: controller.handleNextSwipe,
                   onVerticalDragUpdate: controller.handleNextSwipe,
@@ -49,6 +50,9 @@ class ProfileList extends StatelessWidget {
                     () => Transform.translate(
                       offset: controller.nextCardOffset.value,
                       child: ProfileCard(
+                        key: Key(
+                          (controller.currentIndex.value + 1).toString(),
+                        ),
                         profile: controller
                             .profiles[controller.currentIndex.value + 1],
                       ),

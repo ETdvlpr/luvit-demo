@@ -17,6 +17,34 @@ class HomePage extends GetView<HomeController> {
     ProfileDisplayController profileDisplayController = Get.find();
     return Scaffold(
       backgroundColor: AppTheme.black13,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: AppTheme.black13,
+        elevation: 0,
+        titleSpacing: 0.0,
+        title: TitleBar(
+          starCount: 323233,
+          title: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: '목이길어슬픈기린',
+                  style: AppTheme.boldTextStyle,
+                ),
+                TextSpan(
+                  text: '님의 새로운 ',
+                  style: AppTheme.thinTextStyle,
+                ),
+                TextSpan(
+                  text: '스팟',
+                  style: AppTheme.boldTextStyle,
+                ),
+              ],
+            ),
+          ),
+          hasNotification: true,
+        ),
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           await profileDisplayController.fetchProfiles();
@@ -24,36 +52,9 @@ class HomePage extends GetView<HomeController> {
         },
         child: ListView(
           children: [
-            Column(
-              children: [
-                TitleBar(
-                  starCount: 323233,
-                  title: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '목이길어슬픈기린',
-                          style: AppTheme.boldTextStyle,
-                        ),
-                        TextSpan(
-                          text: '님의 새로운 ',
-                          style: AppTheme.thinTextStyle,
-                        ),
-                        TextSpan(
-                          text: '스팟',
-                          style: AppTheme.boldTextStyle,
-                        ),
-                      ],
-                    ),
-                  ),
-                  hasNotification: true,
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  constraints: BoxConstraints(minHeight: 675.h),
-                  child: ProfileList(),
-                ),
-              ],
+            Container(
+              constraints: BoxConstraints(minHeight: 700.h),
+              child: ProfileList(),
             ),
           ],
           shrinkWrap: true,
