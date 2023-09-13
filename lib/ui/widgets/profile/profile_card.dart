@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,7 +32,7 @@ class ProfileCard extends StatefulWidget {
 }
 
 class _ProfileCardState extends State<ProfileCard> {
-  int currentIndex = 0;
+  int imageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +42,7 @@ class _ProfileCardState extends State<ProfileCard> {
         child: Container(
           width: widget.width,
           height: widget.height,
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
           child: Stack(
             children: [
               _buildBackgroundImage(),
@@ -50,8 +54,8 @@ class _ProfileCardState extends State<ProfileCard> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
-                      if (currentIndex > 0) {
-                        currentIndex--;
+                      if (imageIndex > 0) {
+                        imageIndex--;
                       }
                     });
                   },
@@ -68,8 +72,8 @@ class _ProfileCardState extends State<ProfileCard> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
-                      if (currentIndex < widget.profile.images.length - 1) {
-                        currentIndex++;
+                      if (imageIndex < widget.profile.images.length - 1) {
+                        imageIndex++;
                       }
                     });
                   },
@@ -108,6 +112,24 @@ class _ProfileCardState extends State<ProfileCard> {
   }
 
   Widget _buildBackgroundImage() {
+    final String imageSource = widget.profile.images[imageIndex];
+    print("imageSource: $imageSource");
+    Widget imageWidget;
+
+    if (imageSource.startsWith("data:")) {
+      final bytes =
+          Uint8List.fromList(base64.decode(imageSource.split(',')[1]));
+      imageWidget = Image.memory(bytes, fit: BoxFit.fill);
+    } else {
+      imageWidget = CachedNetworkImage(
+        imageUrl: imageSource,
+        fit: BoxFit.fill,
+        placeholder: (context, url) =>
+            Center(child: CircularProgressIndicator()),
+        errorWidget: (context, url, error) => Icon(Icons.error),
+      );
+    }
+
     return Positioned(
       left: 0,
       top: 0,
@@ -115,17 +137,12 @@ class _ProfileCardState extends State<ProfileCard> {
         width: widget.width,
         height: widget.height,
         decoration: BoxDecoration(
+          color: Colors.white,
           borderRadius: BorderRadius.circular(20),
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          child: CachedNetworkImage(
-            imageUrl: widget.profile.images[currentIndex],
-            fit: BoxFit.fill,
-            placeholder: (context, url) =>
-                Center(child: CircularProgressIndicator()),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-          ),
+          child: imageWidget,
         ),
       ),
     );
@@ -182,15 +199,14 @@ class _ProfileCardState extends State<ProfileCard> {
               ),
             ],
           ),
-
           const SizedBox(height: 4),
           // Profile description or tags
           Container(
             width: 240,
             child: DefaultTextStyle(
-              child: (currentIndex == 0)
+              child: (imageIndex == 0)
                   ? Text(widget.profile.location ?? '')
-                  : (currentIndex == 1)
+                  : (imageIndex == 1)
                       ? Text(widget.profile.description ?? '')
                       : ProfileTags(profile: widget.profile),
               style: AppTheme.thinTextStyle,
@@ -237,11 +253,11 @@ class _ProfileCardState extends State<ProfileCard> {
       left: 20,
       top: 16,
       child: SelectedImageIndicator(
-        selectedIndex: currentIndex,
+        selectedIndex: imageIndex,
         itemCount: widget.profile.images.length,
         // onItemSelected: (index) {
         //   setState(() {
-        //     currentIndex = index;
+        //     imageIndex = index;
         //   });
         // },
       ),
